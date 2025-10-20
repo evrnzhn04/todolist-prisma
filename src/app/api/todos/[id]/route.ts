@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// GET - Tek bir todo getir (id'ye göre)
+// GET 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id: idString } = await params; // ← async await ekledik
+    const { id: idString } = await params;
     const id = parseInt(idString);
 
     const todo = await prisma.todo.findUnique({
@@ -16,28 +16,28 @@ export async function GET(
 
     if (!todo) {
       return NextResponse.json(
-        { error: 'Todo bulunamadı' },
+        { error: 'Todo not found!' },
         { status: 404 }
       );
     }
 
     return NextResponse.json(todo);
   } catch (error) {
-    console.error('Todo getirme hatası:', error);
+    console.error('Failed to fetch todo:', error);
     return NextResponse.json(
-      { error: 'Todo getirilemedi' },
+      { error: 'Failed to fetch todo.' },
       { status: 500 }
     );
   }
 }
 
-// PUT - Todo güncelle
+// PUT 
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id: idString } = await params; // ← async await ekledik
+    const { id: idString } = await params;
     const id = parseInt(idString);
     const body = await request.json();
     const { title, completed } = body;
@@ -53,29 +53,29 @@ export async function PUT(
 
     return NextResponse.json(updatedTodo);
   } catch (error: any) {
-    console.error('Todo güncelleme hatası:', error);
+    console.error('Failed to update todo:', error);
     
     if (error.code === 'P2025') {
       return NextResponse.json(
-        { error: 'Todo bulunamadı' },
+        { error: 'Todo not found.' },
         { status: 404 }
       );
     }
 
     return NextResponse.json(
-      { error: 'Todo güncellenemedi' },
+      { error: 'Failed to update todo.' },
       { status: 500 }
     );
   }
 }
 
-// DELETE - Todo sil
+// DELETE
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id: idString } = await params; // ← async await ekledik
+    const { id: idString } = await params;
     const id = parseInt(idString);
 
     await prisma.todo.delete({
@@ -83,21 +83,21 @@ export async function DELETE(
     });
 
     return NextResponse.json(
-      { message: 'Todo silindi' },
+      { message: 'Todo deleted.' },
       { status: 200 }
     );
   } catch (error: any) {
-    console.error('Todo silme hatası:', error);
+    console.error('Failed to delete todo:', error);
 
     if (error.code === 'P2025') {
       return NextResponse.json(
-        { error: 'Todo bulunamadı' },
+        { error: 'Todo not found!' },
         { status: 404 }
       );
     }
 
     return NextResponse.json(
-      { error: 'Todo silinemedi' },
+      { error: 'Failed to delete todo!' },
       { status: 500 }
     );
   }
