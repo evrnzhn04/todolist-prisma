@@ -125,15 +125,15 @@ export default function Home() {
             )}      
 
           </div>
-          
-          
+          Buraya bir seyler yazdim...
+          {/**Butonlar*/}
           {editingId === todo.id ? (
             <div className="flex gap-2">
               <button onClick={() => handleSaveEdit(todo.id)} className="bg-green-600 text-white px-4 py-2 rounded">
-                <TiTick size={35}/>
+                Record
               </button>
-              <button onClick={() => setEditingId(null)} className="bg-red-700 text-white text-2xl font-bold px-4 py-2 rounded">
-                X
+              <button onClick={() => setEditingId(null)} className="bg-gray-600 text-white px-4 py-2 rounded">
+                Cancel
               </button>
             </div>
           ) : (
