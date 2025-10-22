@@ -10,8 +10,8 @@ export async function GET(){
 
         return NextResponse.json(todos);
     }catch(error){
-        console.error('todo getirme hatası:',error);
-        return NextResponse.json({message:'todo/todolar getirilemedi'}, {status:500});
+        console.error('Failed to fetch todos:',error);
+        return NextResponse.json({message:'Failed to fetch todos'}, {status:500});
     }
 }
 
@@ -21,7 +21,7 @@ export async function POST(request:Request){
         const {title}=body;
 
         if(!title||title.trim()===''){
-            return NextResponse.json({message:'başlık gerekli'},{status:400});
+            return NextResponse.json({message:'Title is required!'},{status:400});
         }
 
         const newTodo=await prisma.todo.create({
@@ -30,7 +30,7 @@ export async function POST(request:Request){
 
         return NextResponse.json(newTodo,{status:201});
     }catch(error){
-        console.error('Todo oluşturma hatası:', error);
-        return NextResponse.json({ error: 'Todo oluşturulamadı' },{ status: 500 });
+        console.error('Failed to create todo:', error);
+        return NextResponse.json({ error: 'Failed to create todo!' },{ status: 500 });
     }
 }

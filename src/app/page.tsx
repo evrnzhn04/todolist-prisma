@@ -3,6 +3,7 @@ import { useEffect, useState,useRef  } from "react";
 import { FaPlus } from "react-icons/fa";
 import { FaPen } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
+import { TiTick } from "react-icons/ti";
 
 export default function Home() {
   const [todos,setTodos]=useState<any[]>([])
@@ -21,7 +22,7 @@ export default function Home() {
       const data =await res.json();
       setTodos(data);
     }catch(error){
-      console.error('todolar çekilemedi:',error);
+      console.error('Failed to fetch todos:',error);
     }
   }
 
@@ -29,7 +30,7 @@ export default function Home() {
     try{
       const newTitle =title.trim();
       if(!newTitle){
-        alert("Başlık boş olamaz!");
+        alert("Title cannot be empty!");
         return;
       }
 
@@ -45,7 +46,7 @@ export default function Home() {
       }
 
     }catch(error){
-      console.error('Todo ekleme hatası:', error);
+      console.error('Failed add to todos:', error);
     }
   }
 
@@ -59,7 +60,7 @@ export default function Home() {
         fetchTodos();
       }
     }catch(error){
-      console.error('Todo silme hatası:', error);    
+      console.error('Failed to delete todo:', error);    
     }
   }
 
@@ -83,23 +84,32 @@ export default function Home() {
         setEditTitle("");        
       }
     }catch(error){
-      console.error('Todo düzenleme hatası:', error);
+      console.error('Failed to update todo:', error);
     }
   }
 
   return (
-    <main className="bg-slate-800 w-full h-screen flex flex-col items-center">
+    <main className="bg-gradient-to-br from-blue-800 to-purple-800 w-full h-screen flex flex-col items-center">
 
-      <header className="bg-slate-600 w-full p-6 flex justify-center items-center gap-4 mb-10">
-        <input value={title} onChange={(e)=>setTitle(e.target.value)} type="text" placeholder="Task Enter" className="text-xl border-2 p-4 w-1/3 placeholder-gray-300 rounded-2xl"/>
-        <button onClick={handleAddTodo}>
-          <FaPlus size={40} className="text-white hover:text-slate-300 hover:scale-115 duration-300"/>
-        </button>
+      <header className="w-full p-6 flex flex-col justify-center items-center gap-4 mb-16">
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+          My Tasks
+        </h1>
+
+        <div className="w-full flex justify-center gap-4">
+          <input value={title} onChange={(e)=>setTitle(e.target.value)} type="text" placeholder="Task Enter" 
+            className="text-2xl text-white border-2 border-white p-4 w-1/3 placeholder-gray-300 rounded-2xl"
+          />
+          <button onClick={handleAddTodo}>
+            <FaPlus size={40} className="text-white hover:text-slate-300 hover:scale-115 duration-300"/>
+          </button>
+        </div>       
+        
       </header>
 
       {todos.map((todo)=>(
-        <div key={todo.id} className="bg-slate-500 w-1/2 p-6 rounded-3xl mb-8 flex flex-row justify-between items-center gap-4
-                                      hover:scale-105 duration-300"
+        <div key={todo.id} className="border-2 border-white backdrop-blur-3xl w-1/2 p-6 rounded-3xl mb-8 flex flex-row justify-between items-center gap-4 shadow-2xl
+                                      hover:bg-[#591BF5] hover:scale-105 duration-300"
         >
           <div className="w-3xl break-words">
 
@@ -108,7 +118,7 @@ export default function Home() {
                 ref={editInputRef}
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="outline-none text-2xl text-white bg-slate-500 p-2 rounded w-3xl"
+                className="outline-none text-2xl text-white p-2 rounded w-3xl"
               />
             ) : (
               <h2 className="text-2xl text-white">{todo.title}</h2>
@@ -129,10 +139,10 @@ export default function Home() {
           ) : (
             <div className="flex flex-row gap-6">
               <button onClick={() => handleEditClick(todo.id, todo.title)}>
-                <FaPen size={30} className="hover:text-blue-950 hover:scale-120 duration-200"/>
+                <FaPen size={30} className="text-white hover:text-green-700 hover:scale-120 duration-200"/>
               </button>
               <button onClick={() => handleDeleteTodo(todo.id)}>
-                <FaTrash size={30} className="hover:text-red-500 hover:scale-120 duration-200"/>
+                <FaTrash size={30} className="text-white hover:text-red-500 hover:scale-120 duration-200"/>
               </button>
             </div>
           )}
